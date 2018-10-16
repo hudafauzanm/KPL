@@ -41,6 +41,7 @@ namespace SimplePaint
 
         private void lineToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            ResetType();
             lineToolStripMenuItem.BackColor = Color.Blue;
             typeShape = LINE;
             isPaint = true;
@@ -48,12 +49,18 @@ namespace SimplePaint
 
         private void rectangleToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            ResetType();
+            rectangleToolStripMenuItem.BackColor = Color.Blue;
+            typeShape = RECT;
+            isPaint = true;
         }
 
         private void circleToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            ResetType();
+            circleToolStripMenuItem.BackColor = Color.Blue;
+            typeShape = CIRC;
+            isPaint = true;
         }
 
         private void panel1_MouseDown(object sender, MouseEventArgs e)
@@ -75,9 +82,36 @@ namespace SimplePaint
             if(canPaint)
             {
                 selesaiPoint = e.Location;
-                graphics.DrawLine(pen, mulaiPoint, selesaiPoint);
+                if(typeShape== LINE)
+                {
+                    graphics.DrawLine(pen, mulaiPoint, selesaiPoint);
+                }
+                else if (typeShape == RECT)
+                {
+                    Rectangle rectangle = new Rectangle(Math.Min(mulaiPoint.X, selesaiPoint.X),
+                        Math.Min(mulaiPoint.Y, selesaiPoint.Y),
+                        Math.Abs(mulaiPoint.X - selesaiPoint.X),
+                        Math.Abs(mulaiPoint.Y - selesaiPoint.Y));
+                    graphics.DrawRectangle(pen, rectangle);
+                }
+                else if (typeShape == CIRC)
+                {
+                    Rectangle rectangle = new Rectangle(Math.Min(mulaiPoint.X, selesaiPoint.X),
+                        Math.Min(mulaiPoint.Y, selesaiPoint.Y),
+                        Math.Abs(mulaiPoint.X - selesaiPoint.X),
+                        Math.Abs(mulaiPoint.Y - selesaiPoint.Y));
+                    graphics.DrawEllipse(pen, rectangle);
+                }
                 canPaint = false;
             }
+        }
+
+        private void ResetType()
+        {
+            typeShape = 0;
+            lineToolStripMenuItem.BackColor = Color.White;
+            rectangleToolStripMenuItem.BackColor = Color.White;
+            circleToolStripMenuItem.BackColor = Color.White;
         }
     }
 }
